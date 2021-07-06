@@ -103,15 +103,15 @@ const readable = new Path('test.txt').createReadStream({encoding: 'utf8'});
 ```
 
 Temporary directories will be deleted automatically when node stops, but can also be removed manually with the `destroy`
-method.
+method. They are created relative to the operating system temp directory with `node-` prefix.
 
 ```js
-// Temporaty directory (async)
+// Create a temporary directory (async)
 const dir = await Path.tempDir();
 await dir.child('test.txt').touch();
 await dir.destroy();
 
-// Temporary directory (sync)
+// Create a temporary directory (sync)
 const dir = Path.tempDirSync();
 dir.child('test.txt').touchSync();
 dir.destroySync();
@@ -138,10 +138,33 @@ const isReadable = new Path('test.txt').isReadableSync();
 const isWritable = new Path('test.txt').isWritableSync();
 
 // Check if file exists (async)
-const exists = await new Path('text.txt').exists();
+const exists = await new Path('test.txt').exists();
 
 // Check if file exists (sync)
-const exists = await new Path('text.txt').existsSync();
+const exists = await new Path('test.txt').existsSync();
+
+// Check if file is absolute
+const isAbsolute = new Path('test.txt').isAbsolute();
+```
+
+```js
+// Resolve path on file system (async)
+const real = await new Path('test.txt').realpath();
+
+// Resolve path on file system (sync)
+const real = new Path('test.txt').realpathSync();
+
+// Create directory (async)
+const dir = await new Path('test', '123').mkdir({recursive: true});
+
+// Create directory (sync)
+const dir = new Path('test', '123').mkdirSync({recursive: true});
+
+// Remove directory (async)
+await new Path('test').rm({recursive: true});
+
+// Remove directory (sync)
+new Path('test').rmSync({recursive: true});
 ```
 
 ## Installation
