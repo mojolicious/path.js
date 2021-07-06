@@ -82,10 +82,8 @@ const content = await new Path('/home/kraih/test.txt').readFile('utf8');
 // Read file (sync)
 const content = new Path('/home/kraih/test.txt').readFileSync('utf8');
 
-// Create file or update utime (async)
+// Create file or update utime
 await new Path('/home/kraih/test.txt').touch();
-
-// Create file or update utime (sync)
 new Path('/home/kraih/test.txt').touchSync();
 
 // Open file (async)
@@ -120,10 +118,8 @@ There is a `*Sync` alternative for almost every method returning a `Promise`. Al
 `Path.constants`.
 
 ```js
-// Make file read-only (async)
+// Make file read-only
 const file = await new Path('test.txt').chmod(Path.constants.O_RDONLY);
-
-// Make file read-only (sync)
 const file = new Path('test.txt').chmodSync(Path.constants.O_RDONLY);
 
 // Check file access (async)
@@ -136,34 +132,44 @@ const isReadable = new Path('test.txt').accessSync(Path.constants.R_OK);
 const isReadable = new Path('test.txt').isReadableSync();
 const isWritable = new Path('test.txt').isWritableSync();
 
-// Check if file exists (async)
+// Check if file exists
 const exists = await new Path('test.txt').exists();
-
-// Check if file exists (sync)
-const exists = await new Path('test.txt').existsSync();
+const exists = new Path('test.txt').existsSync();
 
 // Check if file is absolute
 const isAbsolute = new Path('test.txt').isAbsolute();
 ```
 
 ```js
-// Resolve path on file system (async)
+// Resolve path on file system
 const real = await new Path('test.txt').realpath();
-
-// Resolve path on file system (sync)
 const real = new Path('test.txt').realpathSync();
 
-// Create directory (async)
+// Create directory
 const dir = await new Path('test', '123').mkdir({recursive: true});
-
-// Create directory (sync)
 const dir = new Path('test', '123').mkdirSync({recursive: true});
 
-// Remove directory (async)
+// Remove directory
 await new Path('test').rm({recursive: true});
-
-// Remove directory (sync)
 new Path('test').rmSync({recursive: true});
+```
+
+```js
+// Update atime and mtime
+const file = await new Path('test.txt').utimes(new Date(), new Date());
+const file = new Path('test.txt').utimesSync(new Date(), new Date());
+
+// Symlink file
+const file = await new Path('foo.txt').symlink(new Path('bar.txt'));
+const file = new Path('foo.txt').symlinkSync(new Path('bar.txt'));
+
+// Copy file
+const file = await new Path('foo.txt').copyFile(new Path('bar.txt'));
+const file = new Path('foo.txt').copyFileSync(new Path('bar.txt'));
+
+// Rename file
+await new Path('foo.txt').rename(new Path('bar.txt'));
+new Path('foo.txt').renameSync(new Path('bar.txt'));
 ```
 
 ## Installation
