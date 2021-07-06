@@ -87,6 +87,18 @@ await new Path('/home/kraih/test.txt').touch();
 
 // Create file or update utime (sync)
 new Path('/home/kraih/test.txt').touchSync();
+
+// Open file (async)
+const fh = await new Path('/home/kraih').child('test.txt').open('w');
+await fh.write('Hello ');
+await fh.write('JavaScript!');
+await fh.close();
+
+// Create writable stream
+const writable = new Path('test.txt').createWriteStream({encoding: 'utf8'});
+
+// Create readable stream
+const readable = new Path('test.txt').createReadStream({encoding: 'utf8'});
 ```
 
 Temporary directories will be deleted automatically when node stops, but can also be removed manually with the `destroy`
@@ -98,7 +110,7 @@ const dir = await Path.tempDir();
 await dir.child('test.txt').touch();
 await dir.destroy();
 
-// Temporary directory (async)
+// Temporary directory (sync)
 const dir = Path.tempDirSync();
 dir.child('test.txt').touchSync();
 dir.destroySync();
