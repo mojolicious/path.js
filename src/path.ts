@@ -25,7 +25,7 @@ interface ReadStreamOptions extends StreamOptions {
 
 type NodeError = Error & {code: string};
 
-export class Path {
+export default class Path {
   _path = '';
 
   constructor (...parts: string[]) {
