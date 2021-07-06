@@ -1,6 +1,6 @@
 {
   "name": "@mojojs/path",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "File system paths made fun",
   "keywords": [
     "fs",
