@@ -6,10 +6,9 @@
 
 [![](https://github.com/mojolicious/path.js/workflows/test/badge.svg)](https://github.com/mojolicious/path.js/actions)
 [![npm](https://img.shields.io/npm/v/@mojojs/path.svg)](https://www.npmjs.com/package/@mojojs/path)
-[![Coverage Status](https://coveralls.io/repos/github/mojolicious/path.js/badge.svg)](https://coveralls.io/github/mojolicious/path.js)
 
 A convenient little wrapper around [fs](https://nodejs.org/api/fs.html) and friends. Providing a container class for
-file system paths with a friendly API for dealing with different operating systems.
+file system paths with a friendly API for dealing with different operating systems. Written in TypeScript.
 
 ```js
 import Path from '@mojojs/path';
