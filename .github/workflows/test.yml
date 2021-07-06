@@ -24,4 +24,3 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
     - name: npm test
       run: npm test
-      if: matrix.os != 'ubuntu-latest'
