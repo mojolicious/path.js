@@ -28,6 +28,12 @@ const file = new Path('files/test.txt');
 
 // Absolute file path "/home/kraih/test.txt" (not portable)
 const file = new Path('/home/kraih/test.txt');
+
+// Current file (portable)
+const file = Path.currentFile();
+
+// Caller file (portable)
+const file = Path.callerFile();
 ```
 
 Paths will be automatically split and joined with the correct separator for the current operating system.
@@ -50,9 +56,18 @@ new Path('/home/kraih/test.txt').extname();
 
 // ".json" (POSIX example)
 new Path('/home/kraih/files/test.txt').sibling('hello.json').extname();
+
+// "file:///home/kraih/test.txt" (POSIX example)
+new Path('/home/kraih/test.txt').toFileURL().toString();
+
+// "['files', 'test.txt']" (POSIX example)
+new Path('files/test.txt').toArray();
+
+// Caller directory
+Path.callerFile().dirname();
 ```
 
-Almost all methods will return `this` or a new instance of `Path`, depedning on what makes most sense.
+Almost all methods will return `this` or a new instance of `Path`, depending on what makes most sense.
 
 ```js
 // Write file (async)
@@ -62,11 +77,34 @@ await new Path('/home/kraih/test.txt').writeFile('Hello World!');
 new Path('/home/kraih/test.txt').writeFileSync('Hello World!');
 
 // Read file (async)
-const content = await new Path('/home/kraih/test.txt').reafFile('utf8');
+const content = await new Path('/home/kraih/test.txt').readFile('utf8');
 
 // Read file (sync)
-const content = new Path('/home/kraih/test.txt').reafFileSync('utf8');
+const content = new Path('/home/kraih/test.txt').readFileSync('utf8');
+
+// Create file or update utime (async)
+await new Path('/home/kraih/test.txt').touch();
+
+// Create file or update utime (sync)
+new Path('/home/kraih/test.txt').touchSync();
 ```
+
+Temporary directories will be deleted automatically when node stops, but can also be removed manually with the `destroy`
+method.
+
+```js
+// Temporaty directory (async)
+const dir = await Path.tempDir();
+await dir.child('test.txt').touch();
+await dir.destroy();
+
+// Temporary directory (async)
+const dir = Path.tempDirSync();
+dir.child('test.txt').touchSync();
+dir.destroySync();
+```
+
+There is a `*Sync` alternative for almost every method returning a `Promise`.
 
 ## Installation
 
