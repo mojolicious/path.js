@@ -97,6 +97,11 @@ const writable = new Path('test.txt').createWriteStream({encoding: 'utf8'});
 
 // Create readable stream
 const readable = new Path('test.txt').createReadStream({encoding: 'utf8'});
+
+// Read lines from file
+for await (const line of new Path('test.txt').lines({encoding: 'UTF-8'})) {
+ console.log(line);
+}
 ```
 
 Temporary directories will be deleted automatically when node stops, but can also be removed manually with the `destroy`
@@ -152,6 +157,16 @@ const dir = new Path('test', '123').mkdirSync({recursive: true});
 // Remove directory
 await new Path('test').rm({recursive: true});
 new Path('test').rmSync({recursive: true});
+
+// List files in directory
+for await (const file of new Path('test').list()) {
+  console.log(file.toString());
+}
+
+// List files recursively
+for await (const file of new Path('test').list({recursive: true})) {
+  console.log(file.toString());
+}
 ```
 
 ```js
@@ -170,6 +185,18 @@ const file = new Path('foo.txt').copyFileSync(new Path('bar.txt'));
 // Rename file
 await new Path('foo.txt').rename(new Path('bar.txt'));
 new Path('foo.txt').renameSync(new Path('bar.txt'));
+```
+
+```js
+// Check is file is a directory (async)
+const stat = await new Path('test').stat();
+const isDirectory = stat.isDirectory();
+const lstat = await new Path('test').lstat();
+const isDirectory = lstat.isDirectory();
+
+// Check is file is a directory (sync)
+const isDirectory = new Path('test').statSync().isDirectory();
+const isDirectory = new Path('test').lstatSync().isDirectory();
 ```
 
 ## Installation
