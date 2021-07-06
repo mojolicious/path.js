@@ -1,11 +1,12 @@
 {
   "name": "@mojojs/path",
   "version": "0.0.1",
-  "description": "File system access made fun",
+  "description": "File system paths made fun",
   "keywords": [
     "fs",
     "path",
-    "url"
+    "url",
+    "fun"
   ],
   "author": "Sebastian Riedel <kraih@mojolicious.org>",
   "license": "MIT",
