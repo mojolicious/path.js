@@ -36,31 +36,32 @@ const file = Path.currentFile();
 const file = Path.callerFile();
 ```
 
-Paths will be automatically split and joined with the correct separator for the current operating system.
+Paths will be automatically split and joined with the correct separator for the current operating system. For the
+following examples we will be using POSIX paths and assume a Linux operating system.
 
 ```js
-// "/home/kraih/files/test.txt" (POSIX example)
+// "/home/kraih/files/test.txt"
 new Path('/home/kraih').child('files', 'test.txt');
 
-// "/home/kraih/files/hello.txt" (POSIX example)
+// "/home/kraih/files/hello.txt"
 new Path('/home/kraih/files/test.txt').sibling('hello.txt');
 
-// "test.txt" (POSIX example)
+// "test.txt"
 new Path('/home/kraih/test.txt').basename();
 
-// "foo/bar" (POSIX example)
+// "foo/bar"
 new Path('/home/kraih/test.txt').dirname();
 
-// ".txt" (POSIX example)
+// ".txt"
 new Path('/home/kraih/test.txt').extname();
 
-// ".json" (POSIX example)
+// ".json"
 new Path('/home/kraih/files/test.txt').sibling('hello.json').extname();
 
-// "file:///home/kraih/test.txt" (POSIX example)
+// "file:///home/kraih/test.txt"
 new Path('/home/kraih/test.txt').toFileURL().toString();
 
-// "['files', 'test.txt']" (POSIX example)
+// "['files', 'test.txt']"
 new Path('files/test.txt').toArray();
 
 // Caller directory
@@ -71,10 +72,10 @@ Almost all methods will return `this` or a new instance of `Path`, depending on 
 
 ```js
 // Write file (async)
-await new Path('/home/kraih/test.txt').writeFile('Hello World!');
+const file = await new Path('/home/kraih/test.txt').writeFile('Hello World!');
 
 // Write file (sync)
-new Path('/home/kraih/test.txt').writeFileSync('Hello World!');
+const file = new Path('/home/kraih/test.txt').writeFileSync('Hello World!');
 
 // Read file (async)
 const content = await new Path('/home/kraih/test.txt').readFile('utf8');
@@ -116,7 +117,32 @@ dir.child('test.txt').touchSync();
 dir.destroySync();
 ```
 
-There is a `*Sync` alternative for almost every method returning a `Promise`.
+There is a `*Sync` alternative for almost every method returning a `Promise`. All `fs.constants` are available via
+`Path.constants`.
+
+```js
+// Make file read-only (async)
+const file = await new Path('test.txt').chmod(Path.constants.O_RDONLY);
+
+// Make file read-only (sync)
+const file = new Path('test.txt').chmodSync(Path.constants.O_RDONLY);
+
+// Check file access (async)
+const isReadable = await new Path('test.txt').access(Path.constants.R_OK);
+const isReadable = await new Path('test.txt').isReadable();
+const isWritable = await new Path('test.txt').isWritable();
+
+// Check file access (sync)
+const isReadable = new Path('test.txt').accessSync(Path.constants.R_OK);
+const isReadable = new Path('test.txt').isReadableSync();
+const isWritable = new Path('test.txt').isWritableSync();
+
+// Check if file exists (async)
+const exists = await new Path('text.txt').exists();
+
+// Check if file exists (sync)
+const exists = await new Path('text.txt').existsSync();
+```
 
 ## Installation
 
