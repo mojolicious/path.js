@@ -222,7 +222,7 @@ t.test('Path', async t => {
 
     const link = dir.child('test-link');
     const orig = await link.sibling('test').mkdir().then(orig => orig.symlink(link));
-    await orig.child('test.txt').writeFile('Hello Mojo!');
+    await orig.child('test.txt').writeFile(Buffer.from('Hello Mojo!'));
     t.same((await link.lstat()).isDirectory(), false);
     t.same((await orig.stat()).isDirectory(), true);
     t.same((await orig.lstat()).isDirectory(), true);
@@ -230,7 +230,7 @@ t.test('Path', async t => {
 
     const link2 = dir.child('test-link2');
     const orig2 = link2.sibling('test2').mkdirSync().symlinkSync(link2);
-    orig2.child('test2.txt').writeFileSync('Hello Mojo!');
+    orig2.child('test2.txt').writeFileSync(Buffer.from('Hello Mojo!'));
     t.same(link2.lstatSync().isDirectory(), false);
     t.same(orig2.statSync().isDirectory(), true);
     t.same(orig2.lstatSync().isDirectory(), true);
