@@ -12,6 +12,7 @@ t.test('Path', async t => {
     t.equal('' + new Path('foo', 'bar', 'baz'), path.join('foo', 'bar', 'baz'));
     t.same(new Path('foo', 'bar', 'baz').toArray(), path.join('foo', 'bar', 'baz').split(path.sep));
     t.same(new Path('foo', 'bar.txt').toFileURL(), url.pathToFileURL(path.join('foo', 'bar', 'baz')));
+    t.same(new Path('foo', 'bar.txt').toObject(), path.parse(path.join('foo', 'bar.txt')));
     t.end();
   });
 
@@ -30,6 +31,12 @@ t.test('Path', async t => {
   t.test('extname', t => {
     t.equal(new Path('foo', 'bar', 'file.t').extname(), '.t');
     t.equal(new Path('file.html.ejs').extname(), '.ejs');
+    t.end();
+  });
+
+  t.test('normalize', t => {
+    t.equal(new Path('foo', 'bar', '..', 'file.t').normalize().toString(),
+      path.normalize(path.join('foo', 'bar', '..', 'file.t')));
     t.end();
   });
 
@@ -97,9 +104,9 @@ t.test('Path', async t => {
   await t.test('I/O (lines)', async t => {
     const dir = await Path.tempDir();
     const file = dir.child('test.txt');
-    await file.writeFile('foo\nbar\nI ♥ Mojolicious\n', {encoding: 'UTF-8'});
+    await file.writeFile('foo\nbar\nI ♥ Mojolicious\n', {encoding: 'utf8'});
     const lines = [];
-    for await (const line of file.lines({encoding: 'UTF-8'})) {
+    for await (const line of file.lines({encoding: 'utf8'})) {
       lines.push(line);
     }
     t.same(lines, ['foo', 'bar', 'I ♥ Mojolicious']);

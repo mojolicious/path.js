@@ -167,6 +167,10 @@ export default class Path {
     return this;
   }
 
+  normalize (): Path {
+    return new Path(path.normalize(this._path));
+  }
+
   async open (flags: string | number, mode?: string | number): Promise<fsPromises.FileHandle> {
     return await fsPromises.open(this._path, flags, mode);
   }
@@ -272,6 +276,10 @@ export default class Path {
 
   toFileURL (): URL {
     return url.pathToFileURL(this._path);
+  }
+
+  toObject (): {root: string, dir: string, base: string, ext: string, name: string} {
+    return path.parse(this._path);
   }
 
   toString (): string {

@@ -54,6 +54,9 @@ new Path('/home/kraih/test.txt').dirname();
 // ".txt"
 new Path('/home/kraih/test.txt').extname();
 
+// "/home/kraih/test.txt"
+new Path('/home/kraih/files/../test.txt').normalize();
+
 // "/home"
 new Path('/home/kraih/test.txt').dirname().dirname();
 
@@ -62,6 +65,9 @@ new Path('/home/kraih/files/test.txt').sibling('hello.json').extname();
 
 // "file:///home/kraih/test.txt"
 new Path('/home/kraih/test.txt').toFileURL().toString();
+
+// {root: "/", dir: "/home/kraih", base: "test.txt", ext: ".txt", name: "test"}
+new Path('/home/kraih/test.txt').toObject();
 
 // ['files', 'test.txt']
 new Path('files/test.txt').toArray();
@@ -98,7 +104,7 @@ const writable = new Path('test.txt').createWriteStream({encoding: 'utf8'});
 const readable = new Path('test.txt').createReadStream({encoding: 'utf8'});
 
 // Read lines from file
-for await (const line of new Path('test.txt').lines({encoding: 'UTF-8'})) {
+for await (const line of new Path('test.txt').lines({encoding: 'utf8'})) {
  console.log(line);
 }
 ```
@@ -133,21 +139,6 @@ const real = new Path('test.txt').realpathSync();
 const isAbsolute = new Path('test.txt').isAbsolute();
 ```
 
-Temporary directories will be deleted automatically when node stops, but can also be removed manually with the `destroy`
-method. They are created relative to the operating system temp directory with `node-` prefix.
-
-```js
-// Create a temporary directory (async)
-const dir = await Path.tempDir();
-await dir.child('test.txt').touch();
-await dir.destroy();
-
-// Create a temporary directory (sync)
-const dir = Path.tempDirSync();
-dir.child('test.txt').touchSync();
-dir.destroySync();
-```
-
 Working with directories is just as easy.
 
 ```js
@@ -170,6 +161,23 @@ for await (const file of new Path('test').list({recursive: true})) {
 }
 ```
 
+Temporary directories will be deleted automatically when node stops, but can also be removed manually with the `destroy`
+method. They are created relative to the operating system temp directory with `node-` prefix.
+
+```js
+// Create a temporary directory (async)
+const dir = await Path.tempDir();
+await dir.child('test.txt').touch();
+await dir.destroy();
+
+// Create a temporary directory (sync)
+const dir = Path.tempDirSync();
+dir.child('test.txt').touchSync();
+dir.destroySync();
+```
+
+Everything is optimized for modern JavaScript with `async`/`await`.
+
 ```js
 // Update atime and mtime
 const file = await new Path('test.txt').utimes(new Date(), new Date());
@@ -186,9 +194,7 @@ const file = new Path('foo.txt').copyFileSync(new Path('bar.txt'));
 // Rename file
 await new Path('foo.txt').rename(new Path('bar.txt'));
 new Path('foo.txt').renameSync(new Path('bar.txt'));
-```
 
-```js
 // Check is file is a directory (async)
 const stat = await new Path('test').stat();
 const isDirectory = stat.isDirectory();
