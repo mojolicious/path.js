@@ -278,7 +278,7 @@ export default class Path {
     return url.pathToFileURL(this._path);
   }
 
-  toObject (): {root: string, dir: string, base: string, ext: string, name: string} {
+  toObject (): path.ParsedPath {
     return path.parse(this._path);
   }
 
