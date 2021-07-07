@@ -48,11 +48,14 @@ new Path('/home/kraih/files/test.txt').sibling('hello.txt');
 // "test.txt"
 new Path('/home/kraih/test.txt').basename();
 
-// "foo/bar"
+// "/home/kraih"
 new Path('/home/kraih/test.txt').dirname();
 
 // ".txt"
 new Path('/home/kraih/test.txt').extname();
+
+// "/home"
+new Path('/home/kraih/test.txt').dirname().dirname();
 
 // ".json"
 new Path('/home/kraih/files/test.txt').sibling('hello.json').extname();
@@ -60,7 +63,7 @@ new Path('/home/kraih/files/test.txt').sibling('hello.json').extname();
 // "file:///home/kraih/test.txt"
 new Path('/home/kraih/test.txt').toFileURL().toString();
 
-// "['files', 'test.txt']"
+// ['files', 'test.txt']
 new Path('files/test.txt').toArray();
 
 // Caller directory
