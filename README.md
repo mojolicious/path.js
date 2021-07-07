@@ -70,16 +70,12 @@ Path.callerFile().dirname();
 Almost all methods will return `this` or a new instance of `Path`, depending on what makes most sense.
 
 ```js
-// Write file (async)
+// Write file
 const file = await new Path('/home/kraih/test.txt').writeFile('Hello World!');
-
-// Write file (sync)
 const file = new Path('/home/kraih/test.txt').writeFileSync('Hello World!');
 
-// Read file (async)
+// Read file
 const content = await new Path('/home/kraih/test.txt').readFile('utf8');
-
-// Read file (sync)
 const content = new Path('/home/kraih/test.txt').readFileSync('utf8');
 
 // Create file or update utime
@@ -104,22 +100,7 @@ for await (const line of new Path('test.txt').lines({encoding: 'UTF-8'})) {
 }
 ```
 
-Temporary directories will be deleted automatically when node stops, but can also be removed manually with the `destroy`
-method. They are created relative to the operating system temp directory with `node-` prefix.
-
-```js
-// Create a temporary directory (async)
-const dir = await Path.tempDir();
-await dir.child('test.txt').touch();
-await dir.destroy();
-
-// Create a temporary directory (sync)
-const dir = Path.tempDirSync();
-dir.child('test.txt').touchSync();
-dir.destroySync();
-```
-
-There is a `*Sync` alternative for almost every method returning a `Promise`. All `fs.constants` are available via
+There are `*Sync` alternatives for almost all methods returning a `Promise`. And `fs.constants` are available via
 `Path.constants`.
 
 ```js
@@ -141,15 +122,32 @@ const isWritable = new Path('test.txt').isWritableSync();
 const exists = await new Path('test.txt').exists();
 const exists = new Path('test.txt').existsSync();
 
-// Check if file is absolute
-const isAbsolute = new Path('test.txt').isAbsolute();
-```
-
-```js
 // Resolve path on file system
 const real = await new Path('test.txt').realpath();
 const real = new Path('test.txt').realpathSync();
 
+// Check if file is absolute
+const isAbsolute = new Path('test.txt').isAbsolute();
+```
+
+Temporary directories will be deleted automatically when node stops, but can also be removed manually with the `destroy`
+method. They are created relative to the operating system temp directory with `node-` prefix.
+
+```js
+// Create a temporary directory (async)
+const dir = await Path.tempDir();
+await dir.child('test.txt').touch();
+await dir.destroy();
+
+// Create a temporary directory (sync)
+const dir = Path.tempDirSync();
+dir.child('test.txt').touchSync();
+dir.destroySync();
+```
+
+Working with directories is just as easy.
+
+```js
 // Create directory
 const dir = await new Path('test', '123').mkdir({recursive: true});
 const dir = new Path('test', '123').mkdirSync({recursive: true});
