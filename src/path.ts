@@ -176,12 +176,12 @@ export default class Path {
   }
 
   async readFile (
-    options?: BufferEncoding | (fs.BaseEncodingOptions & EventEmitter.Abortable & {flag?: fs.OpenMode})
+    options?: BufferEncoding | (fs.ObjectEncodingOptions & EventEmitter.Abortable & {flag?: fs.OpenMode})
   ): Promise<string | Buffer> {
     return await fsPromises.readFile(this._path, options);
   }
 
-  readFileSync (options?: BufferEncoding | (fs.BaseEncodingOptions & {flag?: string})): string | Buffer {
+  readFileSync (options?: BufferEncoding | (fs.ObjectEncodingOptions & {flag?: string})): string | Buffer {
     return fs.readFileSync(this._path, options);
   }
 
@@ -197,11 +197,11 @@ export default class Path {
     fs.renameSync(this._path, newPath.toString());
   }
 
-  async realpath (options?: fs.BaseEncodingOptions): Promise<Path> {
+  async realpath (options?: fs.ObjectEncodingOptions): Promise<Path> {
     return await fsPromises.realpath(this._path, options).then(path => new Path(path));
   }
 
-  realpathSync (options?: fs.BaseEncodingOptions): Path {
+  realpathSync (options?: fs.ObjectEncodingOptions): Path {
     return new Path(fs.realpathSync(this._path, options));
   }
 
@@ -235,14 +235,14 @@ export default class Path {
     return this;
   }
 
-  static async tempDir (options?: fs.BaseEncodingOptions): Promise<TempDir> {
+  static async tempDir (options?: fs.ObjectEncodingOptions): Promise<TempDir> {
     return await fsPromises.mkdtemp(path.join(os.tmpdir(), 'node-'), options).then(path => {
       tempDirCleanup.push(path);
       return new TempDir(path);
     });
   }
 
-  static tempDirSync (options?: fs.BaseEncodingOptions): TempDir {
+  static tempDirSync (options?: fs.ObjectEncodingOptions): TempDir {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'node-'), options);
     tempDirCleanup.push(dir);
     return new TempDir(dir);
@@ -298,7 +298,7 @@ export default class Path {
 
   async writeFile (
     data: string | Uint8Array,
-    options?: BufferEncoding | (fs.BaseEncodingOptions & {mode?: fs.Mode, flag?: fs.OpenMode} & EventEmitter.Abortable)
+    options?: fs.ObjectEncodingOptions & {mode?: fs.Mode, flag?: fs.OpenMode} & EventEmitter.Abortable
   ): Promise<this> {
     await fsPromises.writeFile(this._path, data, options);
     return this;
