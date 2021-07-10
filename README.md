@@ -88,8 +88,8 @@ const content = await new Path('/home/kraih/test.txt').readFile('utf8');
 const content = new Path('/home/kraih/test.txt').readFileSync('utf8');
 
 // Create file or update utime
-await new Path('/home/kraih/test.txt').touch();
-new Path('/home/kraih/test.txt').touchSync();
+const file = await new Path('/home/kraih/test.txt').touch();
+const file = new Path('/home/kraih/test.txt').touchSync();
 
 // Open file (async)
 const fh = await new Path('/home/kraih').child('test.txt').open('w');
