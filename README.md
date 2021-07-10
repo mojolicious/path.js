@@ -195,6 +195,10 @@ const file = new Path('foo.txt').copyFileSync(new Path('bar.txt'));
 await new Path('foo.txt').rename(new Path('bar.txt'));
 new Path('foo.txt').renameSync(new Path('bar.txt'));
 
+// Truncate file
+const file = await new Path('foo.txt').truncate(5);
+const file = new Path('foo.txt').truncateSync(5);
+
 // Check is file is a directory (async)
 const stat = await new Path('test').stat();
 const isDirectory = stat.isDirectory();
