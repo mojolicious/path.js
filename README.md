@@ -161,8 +161,9 @@ for await (const file of new Path('test').list({recursive: true})) {
 }
 ```
 
-Temporary directories will be deleted automatically when node stops, but can also be removed manually with the `destroy`
-method. They are created relative to the operating system temp directory with `node-` prefix.
+The creation of temporary directories is supported as well. They will be deleted automatically when node exits, but can
+also be removed manually with the `destroy` and `destroySync` methods. All temporary directories are created relative to
+the operating system temp directory with a `node-` prefix.
 
 ```js
 // Create a temporary directory (async)
