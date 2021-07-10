@@ -248,7 +248,7 @@ export default class Path {
   }
 
   /**
-   * Read file one line at a time line.
+   * Read file one line at a time.
    * @example
    * // Decode UTF-8 file
    * const file = new Path('notes.txt');
