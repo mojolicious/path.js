@@ -114,6 +114,7 @@ t.test('Path', async t => {
 
   await t.test('truncate', async t => {
     const dir = await Path.tempDir();
+
     const file = dir.child('test.txt');
     await file.writeFile('Hello World!');
     t.equal(await file.truncate(5).then(file => file.readFile('utf8')), 'Hello');
