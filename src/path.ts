@@ -26,7 +26,7 @@ interface ReadStreamOptions extends StreamOptions {
 type NodeError = Error & {code: string};
 
 export default class Path {
-  _path = '';
+  _path: string;
 
   /**
    * Create a `Path` instance for the given path or the current working directory.
