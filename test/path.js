@@ -112,6 +112,19 @@ t.test('Path', async t => {
     t.same(lines, ['foo', 'bar', 'I ♥ Mojolicious']);
   });
 
+  await t.test('truncate', async t => {
+    const dir = await Path.tempDir();
+    const file = dir.child('test.txt');
+    await file.writeFile('Hello World!');
+    t.equal(await file.truncate(5).then(file => file.readFile('utf8')), 'Hello');
+    await file.truncate();
+    t.equal(await file.readFile('utf8'), '');
+
+    const file2 = dir.child('test2.txt').writeFileSync('Hello World again!');
+    t.equal(file2.truncateSync(13).readFileSync('utf8'), 'Hello World a');
+    t.equal(file2.truncateSync().readFileSync('utf8'), '');
+  });
+
   await t.test('copyFile and rename', async t => {
     const dir = await Path.tempDir();
 

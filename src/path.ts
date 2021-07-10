@@ -432,6 +432,24 @@ export default class Path {
   }
 
   /**
+   * Asynchronously truncates (shortens or extends the length) of the file.
+   * @see https://nodejs.org/api/fs.html#fs_fspromises_truncate_path_len
+   */
+  async truncate (len?: number): Promise<this> {
+    await fsPromises.truncate(this._path, len);
+    return this;
+  }
+
+  /**
+   * Synchronously truncates (shortens or extends the length) of the file.
+   * @see https://nodejs.org/api/fs.html#fs_fs_truncatesync_path_len
+   */
+  truncateSync (len?: number): this {
+    fs.truncateSync(this._path, len);
+    return this;
+  }
+
+  /**
    * Create a new `TempDir` object (`Path` subclass with `destroy` and `destroySync` methods) for a temporary directory.
    */
   static async tempDir (options?: fs.ObjectEncodingOptions): Promise<TempDir> {
