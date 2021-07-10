@@ -29,7 +29,13 @@ export default class Path {
   _path = '';
 
   /**
-   * The `Path` object represents a file system path.
+   * Create a `Path` instance for the given path or the current working directory.
+   * @example
+   * // Relative file
+   * const file = new Path('work', 'notes.txt');
+   *
+   * // Current working directory
+   * const dir = new Path();
    */
   constructor (...parts: string[]) {
     this._path = parts.length === 0 ? process.cwd() : parts.length === 1 ? parts[0] : path.join(...parts);
@@ -73,6 +79,10 @@ export default class Path {
 
   /**
    * Create a new `Path` object relative to the current path.
+   * @example
+   * // "/home/kraih/notes.txt"
+   * const home = new Path('/home/kraih');
+   * const file = home.child('notes.txt');
    */
   child (...parts: string[]): Path {
     return new Path(this._path, ...parts);
@@ -214,6 +224,12 @@ export default class Path {
 
   /**
    * List files in directory.
+   * @example
+   * // List files recursively
+   * const dir = new Path('/tmp');
+   * for await (const file of dir.list({recursive: true})) {
+   *   console.log(file.toString());
+   * }
    */
   async * list (options: {dir?: boolean, hidden?: boolean, recursive?: boolean} = {}): AsyncIterable<Path> {
     const files = await fsPromises.readdir(this._path, {withFileTypes: true});
@@ -232,7 +248,13 @@ export default class Path {
   }
 
   /**
-   * Read file line by line.
+   * Read file one line at a time line.
+   * @example
+   * // Decode UTF-8 file
+   * const file = new Path('notes.txt');
+   * for await (const line of file.lines({encoding: 'utf8'})) {
+   *   console.log(line);
+   * }
    */
   lines (options?: stream.ReadableOptions): readline.Interface {
     return readline.createInterface({input: this.createReadStream(options), crlfDelay: Infinity});
@@ -366,6 +388,10 @@ export default class Path {
 
   /**
    * Create a new `Path` object relative to the parent directory.
+   * @example
+   * // "/home/kraih/users.txt"
+   * const notes = new Path('/home/kraih/notes.txt');
+   * const users = notes.sibling('users.txt');
    */
   sibling (...parts: string[]): Path {
     return this.dirname().child(...parts);
