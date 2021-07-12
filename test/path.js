@@ -35,8 +35,10 @@ t.test('Path', async t => {
   });
 
   t.test('normalize', t => {
-    t.equal(new Path('foo', 'bar', '..', 'file.t').normalize().toString(),
-      path.normalize(path.join('foo', 'bar', '..', 'file.t')));
+    t.equal(
+      new Path('foo', 'bar', '..', 'file.t').normalize().toString(),
+      path.normalize(path.join('foo', 'bar', '..', 'file.t'))
+    );
     t.end();
   });
 
@@ -73,7 +75,7 @@ t.test('Path', async t => {
 
     t.equal((await dir.child('test.txt').readFile()).toString(), 'Hello Mojo!');
     t.equal(dir.child('test.txt').readFileSync().toString(), 'Hello Mojo!');
-    t.equal((await dir.child('test.txt').readFile('utf8')), 'Hello Mojo!');
+    t.equal(await dir.child('test.txt').readFile('utf8'), 'Hello Mojo!');
 
     await dir.child('test.txt').rm();
     t.same(await dir.child('test.txt').exists(), false);
@@ -87,7 +89,7 @@ t.test('Path', async t => {
     await fh.write('Hello ');
     await fh.write('JavaScript!');
     await fh.close();
-    t.equal((await baz.readFile('utf8')), 'Hello JavaScript!');
+    t.equal(await baz.readFile('utf8'), 'Hello JavaScript!');
   });
 
   await t.test('I/O (streams)', async t => {
@@ -96,7 +98,9 @@ t.test('Path', async t => {
     await new Promise(resolve => write.write('Hello World!', resolve));
     const read = dir.child('test.txt').createReadStream({encoding: 'utf8'});
     let str = '';
-    read.on('data', chunk => { str = str + chunk });
+    read.on('data', chunk => {
+      str = str + chunk;
+    });
     await new Promise(resolve => read.once('end', resolve));
     t.equal(str, 'Hello World!');
   });
@@ -235,7 +239,10 @@ t.test('Path', async t => {
     const dir = await Path.tempDir();
 
     const link = dir.child('test-link');
-    const orig = await link.sibling('test').mkdir().then(orig => orig.symlink(link));
+    const orig = await link
+      .sibling('test')
+      .mkdir()
+      .then(orig => orig.symlink(link));
     await orig.child('test.txt').writeFile(Buffer.from('Hello Mojo!'));
     t.same((await link.lstat()).isDirectory(), false);
     t.same((await orig.stat()).isDirectory(), true);
