@@ -139,7 +139,7 @@ export default class Path {
    * Create a readable stream for file.
    * @see https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options
    */
-  createReadStream(options?: string | ReadStreamOptions): fs.ReadStream {
+  createReadStream(options?: BufferEncoding | ReadStreamOptions | undefined): fs.ReadStream {
     return fs.createReadStream(this._path, options);
   }
 
@@ -147,7 +147,7 @@ export default class Path {
    * Create a writable stream for file.
    * @see https://nodejs.org/api/fs.html#fs_fs_createwritestream_path_options
    */
-  createWriteStream(options?: string | StreamOptions): fs.WriteStream {
+  createWriteStream(options?: BufferEncoding | StreamOptions | undefined): fs.WriteStream {
     return fs.createWriteStream(this._path, options);
   }
 
