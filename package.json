@@ -29,7 +29,7 @@
     "build:lint": "npm run build && npm run lint",
     "build:test": "npm run build && npm test",
     "build:watch": "npm run build -- --watch",
-    "clean": "rm -r tsconfig.tsbuildinfo lib",
+    "clean": "rm -rf tsconfig.tsbuildinfo lib",
     "coverage": "tap --node-arg='--no-warnings' --node-arg='--experimental-loader' --node-arg='@istanbuljs/esm-loader-hook' test/*.js",
     "coverage:ci": "npm run coverage -- --no-check-coverage && tap --no-check-coverage --coverage-report=text-lcov > .lcov.info",
     "lint": "eslint \"test/*.js\" \"src/**/*.ts\" \"src/*.ts\"",
