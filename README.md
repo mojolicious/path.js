@@ -33,6 +33,9 @@ const file = Path.currentFile();
 
 // Caller file (portable)
 const file = Path.callerFile();
+
+// Create a temporary directory (portable and secure)
+const dir = await Path.tempDir();
 ```
 
 Paths will be automatically split and joined with the correct separator for the current operating system. For the
@@ -162,8 +165,8 @@ for await (const file of new Path('test').list({recursive: true})) {
 ```
 
 The creation of temporary directories is supported as well. They will be deleted automatically when node exits, but can
-also be removed manually with the `destroy` and `destroySync` methods. All temporary directories are created relative to
-the operating system temp directory with a `node-` prefix.
+also be removed manually with the `destroy` and `destroySync` methods. By default, all temporary directories are created
+securely, relative to the operating system temp directory with a `node-` prefix.
 
 ```js
 // Create a temporary directory (async)
@@ -175,6 +178,9 @@ await dir.destroy();
 const dir = Path.tempDirSync();
 dir.child('test.txt').touchSync();
 dir.destroySync();
+
+// Create a temporary directory inside of a specific directory with a name prefix
+const dir = await Path.tempDir({dir: new Path('/tmp'), name: 'mojo-'});
 ```
 
 Everything is optimized for modern JavaScript with `async`/`await`.

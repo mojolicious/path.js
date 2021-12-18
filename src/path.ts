@@ -455,8 +455,8 @@ export default class Path {
   /**
    * Create a new `TempDir` object (`Path` subclass with `destroy` and `destroySync` methods) for a temporary directory.
    */
-  static async tempDir(options?: fs.ObjectEncodingOptions): Promise<TempDir> {
-    return await fsPromises.mkdtemp(path.join(os.tmpdir(), 'node-'), options).then(path => {
+  static async tempDir(options?: fs.ObjectEncodingOptions & {dir?: Path; name?: string}): Promise<TempDir> {
+    return await fsPromises.mkdtemp(tempDirPrefix(options?.dir, options?.name), options).then(path => {
       tempDirCleanup.push(path);
       return new TempDir(path);
     });
@@ -465,8 +465,8 @@ export default class Path {
   /**
    * Create a new `TempDir` object (`Path` subclass with `destroy` and `destroySync` methods) for a temporary directory.
    */
-  static tempDirSync(options?: fs.ObjectEncodingOptions): TempDir {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'node-'), options);
+  static tempDirSync(options?: fs.ObjectEncodingOptions & {dir?: Path; name?: string}): TempDir {
+    const dir = fs.mkdtempSync(tempDirPrefix(options?.dir, options?.name), options);
     tempDirCleanup.push(dir);
     return new TempDir(dir);
   }
@@ -581,6 +581,10 @@ class TempDir extends Path {
   destroySync(): void {
     fs.rmSync(this._path, {recursive: true});
   }
+}
+
+function tempDirPrefix(dir?: Path, name?: string) {
+  return path.join(dir === undefined ? os.tmpdir() : dir.toString(), name ?? 'node-');
 }
 
 const tempDirCleanup: string[] = [];

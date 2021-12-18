@@ -293,4 +293,28 @@ t.test('Path', async t => {
     t.same(dir2.existsSync(), false);
     t.same(temp2.existsSync(), false);
   });
+
+  const temp3 = await Path.tempDir();
+  const temp4 = await Path.tempDir({dir: temp3, name: 'mojo-'});
+  t.match(temp4.basename(), /^mojo-/);
+  t.same(await temp3.exists(), true);
+  t.same(await temp4.exists(), true);
+  await temp4.child('test.txt').writeFile('Hello Mojo!');
+  t.same(await temp4.child('test.txt').exists(), true);
+  t.equal((await temp4.child('test.txt').readFile()).toString(), 'Hello Mojo!');
+  await temp3.destroy();
+  t.same(await temp3.exists(), false);
+  t.same(await temp4.exists(), false);
+
+  const temp5 = Path.tempDirSync();
+  const temp6 = Path.tempDirSync({dir: temp5, name: 'mojo-'});
+  t.match(temp6.basename(), /^mojo-/);
+  t.same(temp5.existsSync(), true);
+  t.same(temp6.existsSync(), true);
+  temp6.child('test.txt').writeFileSync('Hello Mojo!');
+  t.same(temp6.child('test.txt').existsSync(), true);
+  t.equal(temp6.child('test.txt').readFileSync().toString(), 'Hello Mojo!');
+  temp5.destroySync();
+  t.same(temp5.existsSync(), false);
+  t.same(temp6.existsSync(), false);
 });
