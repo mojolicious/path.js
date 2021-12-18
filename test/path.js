@@ -296,6 +296,7 @@ t.test('Path', async t => {
 
   const temp3 = await Path.tempDir();
   const temp4 = await Path.tempDir({dir: temp3, name: 'mojo-'});
+  t.equal(temp4.dirname().toString(), temp3.toString());
   t.match(temp4.basename(), /^mojo-/);
   t.same(await temp3.exists(), true);
   t.same(await temp4.exists(), true);
@@ -308,6 +309,7 @@ t.test('Path', async t => {
 
   const temp5 = Path.tempDirSync();
   const temp6 = Path.tempDirSync({dir: temp5, name: 'mojo-'});
+  t.equal(temp6.dirname().toString(), temp5.toString());
   t.match(temp6.basename(), /^mojo-/);
   t.same(temp5.existsSync(), true);
   t.same(temp6.existsSync(), true);
