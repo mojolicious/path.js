@@ -572,7 +572,8 @@ class TempDir extends Path {
    * Asynchronously remove temporary directory.
    */
   async destroy(): Promise<void> {
-    return await fsPromises.rm(this._path, {recursive: true});
+    await fsPromises.rm(this._path, {recursive: true});
+    tempDirRemoved(this._path);
   }
 
   /**
@@ -580,6 +581,7 @@ class TempDir extends Path {
    */
   destroySync(): void {
     fs.rmSync(this._path, {recursive: true});
+    tempDirRemoved(this._path);
   }
 }
 
@@ -587,7 +589,11 @@ function tempDirPrefix(dir?: Path, name?: string) {
   return path.join(dir === undefined ? os.tmpdir() : dir.toString(), name ?? 'node-');
 }
 
-const tempDirCleanup: string[] = [];
+let tempDirCleanup: string[] = [];
+function tempDirRemoved(path: string): void {
+  tempDirCleanup = tempDirCleanup.filter(tempPath => tempPath !== path);
+}
+
 process.on('exit', () => {
   for (const path of tempDirCleanup) {
     try {
