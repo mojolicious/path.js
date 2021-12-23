@@ -94,6 +94,10 @@ const content = new Path('/home/kraih/test.txt').readFileSync('utf8');
 const file = await new Path('/home/kraih/test.txt').touch();
 const file = new Path('/home/kraih/test.txt').touchSync();
 
+// Append to file
+const file = await new Path('/home/kraih/test.txt').appendFile('Hello World!');
+const file = new Path('/home/kraih/test.txt').appendFileSync('Hello World!');
+
 // Open file (async)
 const fh = await new Path('/home/kraih').child('test.txt').open('w');
 await fh.write('Hello ');

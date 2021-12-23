@@ -66,6 +66,27 @@ export default class Path {
   }
 
   /**
+   * Asynchronously append data to a file, creating the file if it does not yet exist.
+   * @see https://nodejs.org/api/fs.html#filehandleappendfiledata-options
+   */
+  async appendFile(
+    data: string | Uint8Array,
+    options?: BufferEncoding | (fs.ObjectEncodingOptions & fs.promises.FlagAndOpenMode)
+  ): Promise<this> {
+    await fsPromises.appendFile(this._path, data, options);
+    return this;
+  }
+
+  /**
+   * Synchronously append data to a file, creating the file if it does not yet exist.
+   * @see https://nodejs.org/api/fs.html#fsappendfilesyncpath-data-options
+   */
+  appendFileSync(data: string | Uint8Array, options?: fs.WriteFileOptions): this {
+    fs.appendFileSync(this._path, data, options);
+    return this;
+  }
+
+  /**
    * Returns the last portion of a path, similar to the Unix `basename` command.
    * @see https://nodejs.org/api/path.html#path_path_basename_path_ext
    */

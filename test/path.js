@@ -92,6 +92,30 @@ t.test('Path', async t => {
     t.equal(await baz.readFile('utf8'), 'Hello JavaScript!');
   });
 
+  await t.test('I/O (append)', async t => {
+    const dir = await Path.tempDir();
+
+    const append = dir.child('append.txt').writeFileSync('Hello');
+    t.equal(await append.readFile('utf8'), 'Hello');
+    t.equal(await (await append.appendFile(' World')).readFile('utf8'), 'Hello World');
+    await append.appendFile('!');
+    t.equal(await append.readFile('utf8'), 'Hello World!');
+
+    const append2 = dir.child('append2.txt').writeFileSync('Hello');
+    t.equal(append2.readFileSync('utf8'), 'Hello');
+    t.equal(append2.appendFileSync(' World').readFileSync('utf8'), 'Hello World');
+    append2.appendFileSync('!');
+    t.equal(append2.readFileSync('utf8'), 'Hello World!');
+
+    const append3 = await dir.child('append3.txt').appendFile('i ♥ mojo.js', 'utf8');
+    t.ok(append3.existsSync());
+    t.equal(append3.readFileSync('utf8'), 'i ♥ mojo.js');
+
+    const append4 = dir.child('append4.txt').appendFileSync('i ♥ mojo.js', 'utf8');
+    t.ok(append4.existsSync());
+    t.equal(append4.readFileSync('utf8'), 'i ♥ mojo.js');
+  });
+
   await t.test('I/O (streams)', async t => {
     const dir = await Path.tempDir();
     const write = dir.child('test.txt').createWriteStream({encoding: 'utf8'});
