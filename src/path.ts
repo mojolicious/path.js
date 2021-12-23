@@ -131,6 +131,24 @@ export default class Path {
   }
 
   /**
+   * Asynchronously change the ownership of a file.
+   * @see https://nodejs.org/api/fs.html#fspromiseschownpath-uid-gid
+   */
+  async chown(uid: number, gid: number): Promise<this> {
+    await fsPromises.chown(this._path, uid, gid);
+    return this;
+  }
+
+  /**
+   * Synchronously change the ownership of a file.
+   * @see https://nodejs.org/api/fs.html#fschownsyncpath-uid-gid
+   */
+  chownSync(uid: number, gid: number): this {
+    fs.chownSync(this._path, uid, gid);
+    return this;
+  }
+
+  /**
    * Returns an object containing commonly used constants for file system operations.
    * @see https://nodejs.org/api/fs.html#fs_fs_constants
    */

@@ -144,6 +144,10 @@ const real = new Path('test.txt').realpathSync();
 
 // Check if file is absolute
 const isAbsolute = new Path('test.txt').isAbsolute();
+
+// Change ownership of a file
+const file = await new Path('test.txt').chown(1, 5);
+const file = new Path('test.txt').chownSync(1, 5);
 ```
 
 Working with directories is just as easy.

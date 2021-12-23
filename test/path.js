@@ -294,6 +294,22 @@ t.test('Path', async t => {
     t.same(file2.chmodSync(Path.constants.O_RDONLY).isWritableSync(), false);
   });
 
+  await t.test('chown', async t => {
+    const dir = await Path.tempDir();
+
+    const file = await dir.child('test.txt').touch();
+    const statBefore = await file.stat();
+    const statAfter = await (await file.chown(statBefore.uid, statBefore.gid)).stat();
+    t.equal(statBefore.uid, statAfter.uid);
+    t.equal(statBefore.gid, statAfter.gid);
+
+    const file2 = dir.child('test2.txt').touchSync();
+    const statBefore2 = file2.statSync();
+    const statAfter2 = file2.chownSync(statBefore.uid, statBefore.gid).statSync();
+    t.equal(statBefore2.uid, statAfter2.uid);
+    t.equal(statBefore2.gid, statAfter2.gid);
+  });
+
   await t.test('tempDir', async t => {
     const temp = await Path.tempDir();
     const dir = new Path(temp.toString());
