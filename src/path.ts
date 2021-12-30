@@ -1,3 +1,8 @@
+/*!
+ * path.js
+ * Copyright (C) 2021 Sebastian Riedel
+ * MIT Licensed
+ */
 import type EventEmitter from 'events';
 import type stream from 'stream';
 import fs from 'fs';
