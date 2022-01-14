@@ -103,7 +103,7 @@ export default class Path {
    * Create a new `Path` object for the caller source file.
    */
   static callerFile(): Path {
-    return new Path(url.fileURLToPath(new StackUtils().capture(3)[2].getFileName() ?? ''));
+    return Path.fromFileURL(new StackUtils().capture(3)[2].getFileName() ?? '');
   }
 
   /**
@@ -199,7 +199,7 @@ export default class Path {
    * Create a new `Path` object for the current source file.
    */
   static currentFile(): Path {
-    return new Path(url.fileURLToPath(new StackUtils().capture(2)[1].getFileName() ?? ''));
+    return Path.fromFileURL(new StackUtils().capture(2)[1].getFileName() ?? '');
   }
 
   /**
@@ -231,6 +231,13 @@ export default class Path {
    */
   extname(): string {
     return path.extname(this._path);
+  }
+
+  /**
+   * Create a new `Path` object from a `file://` URL.
+   */
+  static fromFileURL(file: string): Path {
+    return new Path(url.fileURLToPath(file));
   }
 
   /**
