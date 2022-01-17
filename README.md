@@ -28,8 +28,8 @@ const file = new Path('files/test.txt');
 // Absolute file path "/home/kraih/test.txt" (not portable)
 const file = new Path('/home/kraih/test.txt');
 
-//  Absolue file path from URL "/etc/fstab" (not portable)
-const file = Path.fromFileURL('file:///etc/fstab');
+// Absolute file path "/home/kraih/test.txt" from URL (not portable)
+const file = Path.fromFileURL('file:///home/kraih/test.txt');
 
 // Current file (portable)
 const file = Path.currentFile();
