@@ -1,6 +1,6 @@
 {
   "name": "@mojojs/path",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Convenient container class for file system paths",
   "keywords": [
     "fs",
