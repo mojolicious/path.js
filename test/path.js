@@ -255,6 +255,41 @@ t.test('Path', async t => {
     const expected = [foo.child('.three.txt').toString(), foo.child('bar').toString(), foo.child('two.txt').toString()];
     t.same(nonRecursiveDir.sort(), expected);
 
+    const deep = dir.child('one', 'two', 'three', 'four', 'five');
+    await deep.mkdir({recursive: true});
+    await deep.child('deep.txt').touch();
+    const deepRecursive = [];
+    for await (const file of dir.list({recursive: true, dir: true})) {
+      deepRecursive.push(file.basename());
+    }
+    t.same(deepRecursive.sort(), [
+      'bar',
+      'deep.txt',
+      'five',
+      'foo',
+      'four',
+      'one',
+      'one.txt',
+      'three',
+      'two',
+      'two.txt'
+    ]);
+    const twoLevels = [];
+    for await (const file of dir.list({recursive: true, dir: true, maxDepth: 2})) {
+      twoLevels.push(file.basename());
+    }
+    t.same(twoLevels.sort(), ['bar', 'foo', 'one', 'one.txt', 'three', 'two', 'two.txt']);
+    const oneLevel = [];
+    for await (const file of dir.list({recursive: true, dir: true, maxDepth: 1})) {
+      oneLevel.push(file.basename());
+    }
+    t.same(oneLevel.sort(), ['bar', 'foo', 'one', 'two', 'two.txt']);
+    const threeLevels = [];
+    for await (const file of dir.list({recursive: true, dir: true, maxDepth: 3})) {
+      threeLevels.push(file.basename());
+    }
+    t.same(threeLevels.sort(), ['bar', 'foo', 'four', 'one', 'one.txt', 'three', 'two', 'two.txt']);
+
     await bar.rm({recursive: true});
     t.same(await bar.exists(), false);
   });

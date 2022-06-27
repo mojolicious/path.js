@@ -285,16 +285,21 @@ export default class Path {
    *   console.log(file.toString());
    * }
    */
-  async *list(options: {dir?: boolean; hidden?: boolean; recursive?: boolean} = {}): AsyncIterable<Path> {
+  async *list(
+    options: {dir?: boolean; hidden?: boolean; maxDepth?: number; recursive?: boolean} = {}
+  ): AsyncIterable<Path> {
     const files = await fsPromises.readdir(this._path, {withFileTypes: true});
 
+    const maxDepth = options.maxDepth;
     for (const file of files) {
       if (options.hidden !== true && file.name.startsWith('.')) continue;
 
       const full = path.resolve(this._path, file.name);
       if (file.isDirectory()) {
         if (options.dir === true) yield new Path(full);
-        if (options.recursive === true) yield* new Path(full).list(options);
+        if (options.recursive === true && options.maxDepth !== 0) {
+          yield* new Path(full).list(maxDepth === undefined ? options : {...options, maxDepth: maxDepth - 1});
+        }
       } else {
         yield new Path(full);
       }

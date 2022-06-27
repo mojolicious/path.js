@@ -1,6 +1,12 @@
 
 # Changelog
 
+## v1.5.0 (2022-06-28)
+
+### Features
+
+  * Added `maxDepth` option to `list` method in `Path` class.
+
 ## v1.4.0 (2022-01-14)
 
 ### Features
