@@ -297,7 +297,7 @@ export default class Path {
       const full = path.resolve(this._path, file.name);
       if (file.isDirectory()) {
         if (options.dir === true) yield new Path(full);
-        if (options.recursive === true && options.maxDepth !== 0) {
+        if (options.recursive === true && options.maxDepth !== 1) {
           yield* new Path(full).list(maxDepth === undefined ? options : {...options, maxDepth: maxDepth - 1});
         }
       } else {

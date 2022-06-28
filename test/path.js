@@ -274,21 +274,31 @@ t.test('Path', async t => {
       'two',
       'two.txt'
     ]);
-    const twoLevels = [];
-    for await (const file of dir.list({recursive: true, dir: true, maxDepth: 2})) {
-      twoLevels.push(file.basename());
-    }
-    t.same(twoLevels.sort(), ['bar', 'foo', 'one', 'one.txt', 'three', 'two', 'two.txt']);
-    const oneLevel = [];
-    for await (const file of dir.list({recursive: true, dir: true, maxDepth: 1})) {
-      oneLevel.push(file.basename());
-    }
-    t.same(oneLevel.sort(), ['bar', 'foo', 'one', 'two', 'two.txt']);
     const threeLevels = [];
     for await (const file of dir.list({recursive: true, dir: true, maxDepth: 3})) {
       threeLevels.push(file.basename());
     }
-    t.same(threeLevels.sort(), ['bar', 'foo', 'four', 'one', 'one.txt', 'three', 'two', 'two.txt']);
+    t.same(threeLevels.sort(), ['bar', 'foo', 'one', 'one.txt', 'three', 'two', 'two.txt']);
+    const twoLevels = [];
+    for await (const file of dir.list({recursive: true, dir: true, maxDepth: 2})) {
+      twoLevels.push(file.basename());
+    }
+    t.same(twoLevels.sort(), ['bar', 'foo', 'one', 'two', 'two.txt']);
+    const fourLevels = [];
+    for await (const file of dir.list({recursive: true, dir: true, maxDepth: 4})) {
+      fourLevels.push(file.basename());
+    }
+    t.same(fourLevels.sort(), ['bar', 'foo', 'four', 'one', 'one.txt', 'three', 'two', 'two.txt']);
+    const oneLevel = [];
+    for await (const file of dir.list({recursive: true, dir: true, maxDepth: 1})) {
+      oneLevel.push(file.basename());
+    }
+    t.same(oneLevel.sort(), ['foo', 'one']);
+    const fourLevelsNoDir = [];
+    for await (const file of dir.list({recursive: true, maxDepth: 4})) {
+      fourLevelsNoDir.push(file.basename());
+    }
+    t.same(fourLevelsNoDir.sort(), ['one.txt', 'two.txt']);
 
     await bar.rm({recursive: true});
     t.same(await bar.exists(), false);
