@@ -3,14 +3,12 @@
   "version": "1.5.1",
   "description": "Convenient container class for file system paths",
   "keywords": [
+    "mojojs",
     "fs",
     "path",
-    "url",
     "tmp",
     "file",
-    "dir",
-    "class",
-    "fun"
+    "dir"
   ],
   "author": "Sebastian Riedel <kraih@mojolicious.org>",
   "license": "MIT",
