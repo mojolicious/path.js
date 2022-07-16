@@ -3,14 +3,14 @@
  * Copyright (C) 2021 Sebastian Riedel
  * MIT Licensed
  */
-import type EventEmitter from 'events';
-import type stream from 'stream';
-import fs from 'fs';
-import fsPromises from 'fs/promises';
-import os from 'os';
-import path from 'path';
-import readline from 'readline';
-import url from 'url';
+import type EventEmitter from 'node:events';
+import type stream from 'node:stream';
+import fs from 'node:fs';
+import fsPromises from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import readline from 'node:readline';
+import url from 'node:url';
 import StackUtils from 'stack-utils';
 
 interface StreamOptions {

@@ -1,6 +1,6 @@
-import fsPromises from 'fs/promises';
-import path from 'path';
-import url from 'url';
+import fsPromises from 'node:fs/promises';
+import path from 'node:path';
+import url from 'node:url';
 import Path from '../lib/path.js';
 import t from 'tap';
 
