@@ -82,6 +82,9 @@ new Path('/home/kraih/test.txt').toObject();
 // ['files', 'test.txt']
 new Path('files/test.txt').toArray();
 
+// "kraih/test.txt"
+new Path('/home').relative('/home/kraih/test.txt').toString();
+
 // Caller directory
 Path.callerFile().dirname();
 ```
