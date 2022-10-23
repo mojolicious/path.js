@@ -1,6 +1,8 @@
 
 # Changelog
 
+This package strictly follows [Semantic Versioning](https://semver.org).
+
 ## v1.5.0 (2022-06-28)
 
 ### Features
@@ -34,4 +36,4 @@
 
 ## v1.0.0 (2021-07-07)
 
-First major release. This package strictly follows [Semantic Versioning](https://semver.org).
+First major release.
