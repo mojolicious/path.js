@@ -1,6 +1,6 @@
 /*!
  * path.js
- * Copyright (C) 2021-2022 Sebastian Riedel
+ * Copyright (C) 2021-2023 Sebastian Riedel
  * MIT Licensed
  */
 import type EventEmitter from 'node:events';
