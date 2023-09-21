@@ -655,7 +655,7 @@ process.on('exit', () => {
     try {
       fs.rmSync(path, {recursive: true});
     } catch (error) {
-      if (!(error instanceof Error) || (error as NodeError).code !== 'ENOENT') throw error;
+      if (!(error instanceof Error) || (error as NodeError).code !== 'ENOENT') console.warn(error);
     }
   }
 });
