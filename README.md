@@ -201,6 +201,19 @@ dir.destroySync();
 const dir = await Path.tempDir({dir: new Path('/tmp'), name: 'mojo-'});
 ```
 
+If your version of Node supports the `using` keyword, or you are using TypeScript, you can also use that to clean up
+temporary directories for you.
+
+```js
+// Create a temporary directory and delete it at end of scope (async)
+await using dir = await Path.tempDir();
+await dir.child('test.txt').touch();
+
+// Create a temporary directory and delete it at end of scope (sync)
+using dir = Path.tempDirSync();
+dir.child('test.txt').touchSync();
+```
+
 Everything is optimized for modern JavaScript with `async`/`await`.
 
 ```js

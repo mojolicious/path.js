@@ -624,6 +624,14 @@ export default class Path {
 }
 
 class TempDir extends Path {
+  async [Symbol.asyncDispose]() {
+    await this.destroy();
+  }
+
+  [Symbol.dispose]() {
+    this.destroySync();
+  }
+
   /**
    * Asynchronously remove temporary directory.
    */
