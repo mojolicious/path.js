@@ -3,6 +3,12 @@
 
 This package strictly follows [Semantic Versioning](https://semver.org).
 
+## v1.7.0 (2024-10-12)
+
+### Features
+
+  * Better support for Deno and Bun. ([@andrew-grechkin](https://github.com/andrew-grechkin))
+
 ## v1.6.0 (2023-12-23)
 
 ### Features
