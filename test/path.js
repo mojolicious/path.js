@@ -1,6 +1,7 @@
 import fsPromises from 'node:fs/promises';
 import path from 'node:path';
 import url from 'node:url';
+import {callerTest, callerTestTwo, callerTestThree} from './support/caller.js';
 import Path from '../lib/path.js';
 import t from 'tap';
 
@@ -403,5 +404,17 @@ t.test('Path', async t => {
     temp5.destroySync();
     t.same(temp5.existsSync(), false);
     t.same(temp6.existsSync(), false);
+  });
+
+  await t.test('callerFile', async t => {
+    t.same((await callerTest().realpath()).toString(), (await Path.currentFile().realpath()).toString());
+    t.same(
+      (await callerTestTwo().realpath()).toString(),
+      (await Path.currentFile().dirname().child('support', 'caller.js').realpath()).toString()
+    );
+    t.same(
+      (await callerTestThree().realpath()).toString(),
+      (await Path.currentFile().dirname().child('support', 'caller.js').realpath()).toString()
+    );
   });
 });
