@@ -404,6 +404,16 @@ t.test('Path', async t => {
     temp5.destroySync();
     t.same(temp5.existsSync(), false);
     t.same(temp6.existsSync(), false);
+
+    // Explicit resource management (without "using" syntax)
+    const temp7 = Path.tempDirSync();
+    t.same(temp7.existsSync(), true);
+    temp7[Symbol.dispose]();
+    t.same(temp7.existsSync(), false);
+    const temp8 = await Path.tempDir();
+    t.same(await temp8.exists(), true);
+    await temp8[Symbol.asyncDispose]();
+    t.same(await temp8.exists(), false);
   });
 
   await t.test('callerFile', async t => {

@@ -1,32 +1,11 @@
-import Path from '../src/path.ts';
 import t from 'tap';
 
+// The "using" and "await using" syntax is not supported by Node.js 22
+const skip = parseInt(process.versions.node) < 24 ? {skip: 'explicit resource management requires Node.js 24'} : {};
+
 t.test('Path', async t => {
-  t.test('using keyword for temporary files', async t => {
-    let check = Path.currentFile();
-
-    t.test('dispose', t => {
-      {
-        using dir = Path.tempDirSync();
-        check = new Path(dir.toString());
-        const file = dir.child('foo.txt');
-        t.equal(file.writeFileSync('works').readFileSync('utf-8'), 'works');
-        t.same(check.existsSync(), true);
-      }
-      t.same(check.existsSync(), false);
-      t.end();
-    });
-
-    await t.test('asyncDispose', async t => {
-      let check: Path;
-      {
-        await using dir = await Path.tempDir();
-        check = new Path(dir.toString());
-        const file = dir.child('foo.txt');
-        t.equal(file.writeFileSync('works too').readFileSync('utf-8'), 'works too');
-        t.same(await check.exists(), true);
-      }
-      t.same(await check.exists(), false);
-    });
+  await t.test('using keyword for temporary files', skip, async t => {
+    const {default: usingTests} = await import('./support/using.ts');
+    await usingTests(t);
   });
 });
