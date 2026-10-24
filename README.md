@@ -250,7 +250,7 @@ const isDirectory = new Path('test').lstatSync().isDirectory();
 
 ## Installation
 
-All you need is Node.js 18.0.0 (or newer).
+All you need is Node.js 22.18.0 (or newer).
 
 ```
 $ npm install @mojojs/path

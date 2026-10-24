@@ -21,21 +21,18 @@
   },
   "homepage": "https://mojojs.org",
   "scripts": {
-    "build": "npx tsc --build ./",
-    "build:clean": "npm run clean && npm run build",
-    "build:coverage": "npm run build && npm run coverage",
-    "build:lint": "npm run build && npm run lint",
-    "build:test": "npm run build && npm test",
-    "build:watch": "npm run build -- --watch",
-    "clean": "rm -rf tsconfig.tsbuildinfo lib",
-    "coverage": "c8 tap --disable-coverage --allow-empty-coverage test/*.js test/*.ts",
-    "coverage:ci": "c8 --reporter lcovonly tap --disable-coverage --allow-empty-coverage test/*.js test/*.ts",
-    "lint": "eslint \"test/*.js\" \"src/**/*.ts\" \"src/*.ts\"",
+    "build": "npx tsc -p tsconfig.json",
+    "check": "npx tsc --noEmit -p tsconfig.json",
+    "clean": "rm -rf lib",
+    "coverage": "tap build && c8 tap --disable-coverage --allow-empty-coverage test/*.js test/*.ts",
+    "coverage:ci": "tap build && c8 --reporter lcovonly tap --disable-coverage --allow-empty-coverage test/*.js test/*.ts",
+    "lint": "eslint",
     "lint:fix": "npm run lint -- --fix",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run clean && npm run build",
     "publish:minor": "npm version minor && npm publish",
     "publish:patch": "npm version patch && npm publish",
-    "test": "tap --disable-coverage --allow-empty-coverage test/*.js test/*.ts"
+    "test": "tap build && tap --disable-coverage --allow-empty-coverage test/*.js test/*.ts",
+    "check:package": "sh test/support/package/check.sh"
   },
   "exports": "./lib/path.js",
   "types": "./lib/path.d.ts",
@@ -44,23 +41,31 @@
     "lib/"
   ],
   "devDependencies": {
-    "@types/node": "^22.5.0",
-    "@types/stack-utils": "^2.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "c8": "^10.1.2",
-    "eslint": "^8.1.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "prettier": "^3.0.0",
-    "tap": "^18.5.0",
-    "typescript": "^5.0.2"
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.0.1",
+    "@types/stack-utils": "^2.0.3",
+    "c8": "^12.0.0",
+    "eslint": "^10.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-node": "^0.4.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import-x": "^4.16.2",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.3",
+    "tap": "^21.8.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.2"
   },
   "engines": {
-    "node": ">= 18"
+    "node": ">= 22.18"
   },
   "dependencies": {
-    "stack-utils": "^2.0.3"
+    "stack-utils": "^2.0.6"
+  },
+  "tap": {
+    "plugin": [
+      "!@tapjs/typescript"
+    ]
   }
 }

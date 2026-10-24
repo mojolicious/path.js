@@ -1,4 +1,4 @@
-import Path from '../../lib/path.js';
+import Path from '../../src/path.ts';
 
 export function callerTest() {
   return Path.callerFile();

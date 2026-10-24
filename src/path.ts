@@ -3,6 +3,7 @@
  * Copyright (C) 2021-2023 Sebastian Riedel
  * MIT Licensed
  */
+/// <reference types="node" preserve="true" />
 import type EventEmitter from 'node:events';
 import type stream from 'node:stream';
 import fs from 'node:fs';
@@ -65,7 +66,7 @@ export default class Path {
     try {
       fs.accessSync(this._path, mode);
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }
@@ -380,7 +381,7 @@ export default class Path {
   async readFile(
     options?: BufferEncoding | (fs.ObjectEncodingOptions & EventEmitter.Abortable & {flag?: fs.OpenMode})
   ): Promise<string | Buffer> {
-    return await fsPromises.readFile(this._path, options);
+    return await fsPromises.readFile(this._path, options ?? {});
   }
 
   /**
@@ -388,7 +389,7 @@ export default class Path {
    * @see https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
    */
   readFileSync(options?: BufferEncoding | (fs.ObjectEncodingOptions & {flag?: string})): string | Buffer {
-    return fs.readFileSync(this._path, options);
+    return fs.readFileSync(this._path, typeof options === 'string' ? {encoding: options} : (options ?? {}));
   }
 
   /**
@@ -463,7 +464,8 @@ export default class Path {
    * @see https://nodejs.org/api/fs.html#fs_fspromises_stat_path_options
    */
   async stat(options?: fs.StatOptions): Promise<fs.Stats | fs.BigIntStats> {
-    return await fsPromises.stat(this._path, options);
+    // Only undefined with "throwIfNoEntry: false", which has never been supported here
+    return (await fsPromises.stat(this._path, options)) as fs.Stats | fs.BigIntStats;
   }
 
   /**
@@ -536,7 +538,7 @@ export default class Path {
     const now = new Date();
     try {
       await fsPromises.utimes(this._path, now, now);
-    } catch (error) {
+    } catch {
       await this.open('w').then(async value => await value.close());
     }
 
@@ -550,7 +552,7 @@ export default class Path {
     const now = new Date();
     try {
       fs.utimesSync(this._path, now, now);
-    } catch (error) {
+    } catch {
       fs.closeSync(fs.openSync(this._path, 'w'));
     }
 

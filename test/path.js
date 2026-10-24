@@ -2,7 +2,7 @@ import fsPromises from 'node:fs/promises';
 import path from 'node:path';
 import url from 'node:url';
 import {callerTest, callerTestTwo, callerTestThree} from './support/caller.js';
-import Path from '../lib/path.js';
+import Path from '../src/path.ts';
 import t from 'tap';
 
 t.test('Path', async t => {

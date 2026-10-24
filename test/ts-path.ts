@@ -1,4 +1,4 @@
-import Path from '../lib/path.js';
+import Path from '../src/path.ts';
 import t from 'tap';
 
 t.test('Path', async t => {
@@ -18,7 +18,7 @@ t.test('Path', async t => {
     });
 
     await t.test('asyncDispose', async t => {
-      let check = Path.currentFile();
+      let check: Path;
       {
         await using dir = await Path.tempDir();
         check = new Path(dir.toString());
